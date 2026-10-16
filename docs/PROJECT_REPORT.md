@@ -123,9 +123,11 @@ the input-validation correction.
 ## 9. Safety and Limitations
 
 Process control depends on the user's permissions and the target process.
-The current implementation rejects PIDs less than or equal to 1, but
-this alone is not a complete safety mechanism. Users must only select
-processes they own or are authorized to manage.
+The implementation rejects PID values less than or equal to 1 and
+the manager's own PID, checks that the selected process belongs to the
+current user, and asks for confirmation before sending SIGTERM. These
+checks reduce risk but are not a complete security boundary. Users must
+only manage processes they own or are authorized to manage.
 
 The application currently provides a terminal interface, lists visible
 processes without sorting, and does not provide advanced CPU monitoring
@@ -134,8 +136,8 @@ termination confirmation would improve safety before wider deployment.
 
 ## 10. Future Enhancements
 
-- Add process ownership checks before control operations.
-- Add confirmation before requesting termination.
+- Improve permission diagnostics and handling of processes that exit
+  while being inspected.
 - Add sorting and filtering by PID, name, or memory usage.
 - Add CPU usage and additional process statistics.
 - Add automatic refresh and pagination.

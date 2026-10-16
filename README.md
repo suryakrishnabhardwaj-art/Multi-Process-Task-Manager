@@ -111,18 +111,18 @@ and exiting the application.
 ## 11. Safety Notes
 
 Use this program only on processes you own or are authorized to manage.
-For demonstrations, create a test process such as sleep 300. Do not
-experiment on critical system processes or processes belonging to other
-users. Operating-system permissions may prevent certain operations.
+For demonstrations, create a test process such as sleep 300. The program
+rejects PID values less than or equal to 1 and its own PID, checks process
+ownership, and requires confirmation before sending SIGTERM. Operating-system
+permissions still apply; these checks do not guarantee complete protection.
 
 ## 12. Limitations and Future Enhancements
 
 - The current interface is command-line based.
 - The process list is not sorted or paginated.
-- Process control can be further improved with ownership checks,
-  explicit termination confirmation, and clearer permission handling.
-- Future versions may include CPU usage, sorting, search, and automatic
-  refresh.
+- Ownership checks and termination confirmation are implemented.
+- Future versions may improve permission diagnostics and add CPU usage,
+  process sorting, search, and automatic refresh.
 
 ## 13. Conclusion
 
