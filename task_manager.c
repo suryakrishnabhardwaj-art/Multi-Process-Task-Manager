@@ -145,6 +145,32 @@ void view_process(int pid) {
     printf("=========================================\n");
 }
 
+int is_user_owned_process(int pid) {
+    char path[64];
+    char line[512];
+    FILE *file;
+    unsigned int process_uid;
+
+    snprintf(path, sizeof(path), "/proc/%d/status", pid);
+    file = fopen(path, "r");
+
+    if (file == NULL)
+        return 0;
+
+    while (fgets(line, sizeof(line), file) != NULL) {
+        if (strncmp(line, "Uid:", 4) == 0) {
+            if (sscanf(line, "Uid: %u", &process_uid) == 1) {
+                fclose(file);
+                return process_uid == (unsigned int)getuid();
+            }
+            break;
+        }
+    }
+
+    fclose(file);
+    return 0;
+}
+
 void terminate_process(int pid) {
     if (pid <= 1) {
         printf("\n[WARNING] System PID cannot be terminated.\n");
@@ -193,8 +219,18 @@ void process_control() {
         return;
     }
 
+    if (pid <= 1 || pid == getpid()) {
+        printf("[WARNING] System PIDs and this manager are protected.\n");
+        return;
+    }
+
     if (kill(pid, 0) != 0) {
         perror("[ERROR] Process does not exist or permission denied");
+        return;
+    }
+
+    if (!is_user_owned_process(pid)) {
+        printf("[WARNING] Only processes owned by your user can be controlled.\n");
         return;
     }
 
@@ -224,9 +260,23 @@ void process_control() {
                 view_process(pid);
                 break;
 
-            case 2:
-                terminate_process(pid);
-                return;
+            case 2: {
+                char confirm;
+                printf("\nConfirm termination of PID %d? (y/N): ", pid);
+
+                if (scanf(" %c", &confirm) != 1) {
+                    printf("\n[ERROR] Could not read confirmation.\n");
+                    return;
+                }
+
+                if (confirm == 'y' || confirm == 'Y') {
+                    terminate_process(pid);
+                    return;
+                }
+
+                printf("\n[CANCELLED] Termination cancelled.\n");
+                break;
+            }
 
             case 3:
                 stop_process(pid);
