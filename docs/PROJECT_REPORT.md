@@ -154,7 +154,10 @@ further improvements in safety, usability, and monitoring capabilities.
 
 Project: Multi-Process Task Manager for Linux
 
-Team members: Add the names and student IDs of the participating
-hackathon team members.
+| Team Member | Student ID |
+|-------------|------------|
+| Chaitanya | 2520090094 |
+| Bhardwaj | 2520090182 |
+| Salman | 2520089070 |
 
-Faculty / Mentor: Add the assigned faculty or mentor, if applicable.
+Faculty / Mentor: Mrs. Alekhya Dasari
