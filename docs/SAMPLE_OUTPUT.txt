@@ -1,0 +1,32 @@
+MULTI-PROCESS TASK MANAGER FOR LINUX
+===============================================
+
+MAIN MENU
+1. Display All Processes
+2. Control Selected Process
+3. Exit
+
+PROCESS LIST
+PID      STATE    MEMORY       PROCESS
+432      R        1808 KB      task_manager
+
+PROCESS INFORMATION — TEST PROCESS
+PID       : 474
+Name      : sleep
+State     : S
+Memory    : 1904 KB
+
+PROCESS CONTROL TESTS
+1. View Process Information — PASSED
+2. Stop Process using SIGSTOP — PASSED
+3. Continue Process using SIGCONT — PASSED
+4. Terminate Process using SIGTERM — PASSED
+
+VERIFICATION
+The test process was created using sleep 300 &
+The process was checked using pgrep sleep.
+After termination, pgrep sleep returned no process.
+
+COMPILATION
+Command: make clean && make
+Result: Compiled successfully without compiler warnings.
